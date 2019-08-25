@@ -1,0 +1,5 @@
+django
+psycopg2-binary
+social-auth-app-django
+django-oauth-toolkit
+django-cors-middleware

@@ -1,0 +1,23 @@
+{% extends 'base/base.html' %}
+
+{% block title %}{{repository_data.name}}{% endblock %}
+
+{% block content %}
+  <a href="{% url 'home' %}">Voltar</a>
+  <a href="{% url 'logout' %}">Logout</a>
+
+    {% if repository_data.description %}
+    <p>{{repository_data.description}}</p>
+    {% endif %}
+    <p>{{repository_data.name}}</p>
+    
+    <p>  {% for tag in repository_tags.names %}{{tag}}&nbsp;{% endfor %}</p>
+
+    <form action="{% url 'detail_repository' repository_data.name %}" method="POST">
+        {% csrf_token %}
+        <input id="tag1" name="tag" type="text" placeholder="Informe uma Tag"/>
+        <input id="tag2" name="tag" type="text" placeholder="Informe uma Tag"/>
+        <button> Atualizar  </button>
+    </form>
+
+{% endblock %}

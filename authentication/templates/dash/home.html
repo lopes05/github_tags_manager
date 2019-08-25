@@ -1,0 +1,18 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+  Hi {{ user.username }}!
+  <a href="{% url 'logout' %}">Logout</a>
+
+
+  <form method="GET" action="{% url 'home' %}">
+    <input type="text" name="topic" />
+    <button>Buscar</button>
+  </form>
+
+  {% for repo in user_repositories %}
+    <a href="{% url 'detail_repository' repo.name %}" >{{repo.name}}</h3>
+  {%endfor%}
+{% endblock %}
