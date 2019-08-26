@@ -23,9 +23,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'mv75aw=jlm*jllj_j-(^!&t%7u^&c5$lg%_(th3p!07m7vwwl0'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get("ENV", "development") == "development"
 
-ALLOWED_HOSTS = []
+
+ALLOWED_HOSTS = ['localhost', 'herokuapp.com']
 
 
 # Application definition
@@ -138,5 +139,5 @@ STATICFILES_DIRS = (
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'home'
 
-SOCIAL_AUTH_CUSTOM_GITHUB_KEY = "c429bbe2b90bc69947ef" #Paste Client ID
-SOCIAL_AUTH_CUSTOM_GITHUB_SECRET = "8a9a08b3785d854ad6632466d59f7ad2cf677c11" #Paste Secret Key
+SOCIAL_AUTH_CUSTOM_GITHUB_KEY = os.environ.get("SOCIAL_AUTH_CUSTOM_GITHUB_KEY")
+SOCIAL_AUTH_CUSTOM_GITHUB_SECRET = os.environ.get("SOCIAL_AUTH_CUSTOM_GITHUB_SECRET")

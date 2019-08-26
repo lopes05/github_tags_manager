@@ -4,3 +4,5 @@ social-auth-app-django
 django-oauth-toolkit
 django-cors-middleware
 django-fontawesome-5
+django-heroku
+gunicorn

@@ -6,7 +6,10 @@ from django.http.response import HttpResponse, JsonResponse
 from django.contrib.auth import logout
 from authentication.github_api import *
 from django.contrib.auth.decorators import login_required
-
+import requests
+import json
+from django.urls import reverse
+from social_django.models import UserSocialAuth
 
 # Create your views here.
 
@@ -21,12 +24,6 @@ class LoginView(View, ContextMixin):
     def post(self, request, *args, **kwargs):
         context = {}
         return redirect("social:begin", args=["github"])
-
-import requests
-import json
-from django.urls import reverse
-from social_django.models import UserSocialAuth
-
 
 class HomeView(View, ContextMixin, LoginRequiredMixin):
     login_url = '/login/'

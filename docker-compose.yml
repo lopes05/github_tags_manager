@@ -1,17 +1,17 @@
 version: '3'
 
 services:
-  db:
-    image: postgres
   web:
     build: .
-    command: python manage.py runserver 0.0.0.0:8000
+    command: gunicorn --bind 0.0.0.0:8000 teste_labhacker.wsgi
     volumes:
       - .:/code
     ports:
       - "8000:8000"
-    depends_on:
-      - db
+    environment:
+      - SOCIAL_AUTH_CUSTOM_GITHUB_KEY=c429bbe2b90bc69947ef
+      - SOCIAL_AUTH_CUSTOM_GITHUB_SECRET=8a9a08b3785d854ad6632466d59f7ad2cf677c11
+      - ENV=development  
 
 volumes:
   postgres_data:
