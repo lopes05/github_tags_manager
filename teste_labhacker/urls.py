@@ -21,11 +21,13 @@ from teste_labhacker import settings
 from django.conf.urls.static import static
 
 
+from django.contrib.auth.decorators import login_required
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('login/', LoginView.as_view(), name='login'),
     path('auth/', include('social_django.urls')),
-    path('', HomeView.as_view(), name='home'),
-    path('repository/<str:name>', DetailRepository.as_view(), name='detail_repository'),
-    path("logout/", logout_view, name="logout"),
+    path('', login_required(HomeView.as_view()), name='home'),
+    path('repository/<str:name>', login_required(DetailRepository.as_view()), name='detail_repository'),
+    path("logout/", login_required(logout_view), name="logout"),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
