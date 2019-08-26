@@ -17,6 +17,9 @@ from django.contrib import admin
 from django.urls import path, include
 from django.views.generic.base import TemplateView
 from authentication.views import *
+from teste_labhacker import settings
+from django.conf.urls.static import static
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -25,4 +28,4 @@ urlpatterns = [
     path('', HomeView.as_view(), name='home'),
     path('repository/<str:name>', DetailRepository.as_view(), name='detail_repository'),
     path("logout/", logout_view, name="logout"),
-]
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -1,23 +1,45 @@
 {% extends 'base/base.html' %}
+{% load static %}
+{% load filters %}
+
 
 {% block title %}{{repository_data.name}}{% endblock %}
 
 {% block content %}
-  <a href="{% url 'home' %}">Voltar</a>
-  <a href="{% url 'logout' %}">Logout</a>
 
-    {% if repository_data.description %}
-    <p>{{repository_data.description}}</p>
-    {% endif %}
-    <p>{{repository_data.name}}</p>
-    
-    <p>  {% for tag in repository_tags.names %}{{tag}}&nbsp;{% endfor %}</p>
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+                <h2>{{repository_data.name}}</h2>
+                {% if repository_data.description %}
+                    <p class="p-detail">{{repository_data.description}}</p>
+                {% else %}
+                    <p class="p-detail">Não há descrição disponível</p>
+                {% endif %}
+            </div>
 
-    <form action="{% url 'detail_repository' repository_data.name %}" method="POST">
-        {% csrf_token %}
-        <input id="tag1" name="tag" type="text" placeholder="Informe uma Tag"/>
-        <input id="tag2" name="tag" type="text" placeholder="Informe uma Tag"/>
-        <button> Atualizar  </button>
-    </form>
+            <div class="card-body">
+                <div class="card-content"> 
+                    <form action="{% url 'detail_repository' repository_data.name %}" method="POST">
+                            {% csrf_token %}   
+                            <div class="form-group text-center">
+                                <label for="city_tag">Tags do repositório</label>
+                                <input name="tag" id="tags" type="text" value="{{repository_tags|build_tags}}" onChange="changeValue()" data-role="tagsinput" class="form-control taginput" />
+                                <button class="btn btn-dark"> Salvar  </button>
+                            </div>    
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        
+
+        function changeValue(){
+            //console.log(document.getElementById("tags").value);
+        }
+    </script>
 
 {% endblock %}

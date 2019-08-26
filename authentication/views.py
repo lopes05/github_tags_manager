@@ -55,8 +55,8 @@ class DetailRepository(View):
 
     def post(self, request, *args, **kwargs):
         token = UserSocialAuth.objects.get(extra_data__contains=request.user.username).access_token
-        
-        lista = request.POST.getlist("tag")
+        print(request.POST)
+        lista = request.POST.get("tag").split(',')
         lista = [x.lower() for x in lista if len(x) > 0]
 
         response = update_repository_tags(request.user, kwargs["name"], token, lista)

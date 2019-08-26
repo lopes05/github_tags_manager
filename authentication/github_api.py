@@ -25,9 +25,17 @@ def update_repository_tags(user, repository, token, topics):
 
 def filter_repositories(user, token, topics):
     resp = requests.get(f"https://api.github.com/search/repositories?q=topic:{topics}+user:{user.username}", headers={'Authorization': f'token {token}', 'Accept': "application/vnd.github.mercy-preview+json"})
-    lista = json.loads(resp.content)['items']
-
+    try:
+        lista = json.loads(resp.content)['items']
+    except KeyError:
+        lista = []
+        
     # concat fork repositories
     resp = requests.get(f"https://api.github.com/search/repositories?q=topic:{topics}+user:{user.username}+fork:true", headers={'Authorization': f'token {token}', 'Accept': "application/vnd.github.mercy-preview+json"})
-    lista += json.loads(resp.content)['items']
+    try:
+        for el in json.loads(resp.content)['items']:
+            if el not in lista:
+                lista.append(el)
+    except KeyError:
+        pass
     return lista
