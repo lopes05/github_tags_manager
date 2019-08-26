@@ -10,6 +10,7 @@ import requests
 import json
 from django.urls import reverse
 from social_django.models import UserSocialAuth
+from django.urls import NoReverseMatch
 
 # Create your views here.
 
@@ -19,6 +20,8 @@ class LoginView(View, ContextMixin):
 
     def get(self, request, *args, **kwargs):
         context = {}
+        if request.user.is_authenticated:
+            return redirect("home")
         return render(request, self.template_name, context)
 
     def post(self, request, *args, **kwargs):
@@ -44,7 +47,11 @@ class HomeView(View, ContextMixin, LoginRequiredMixin):
             user_repositories = get_user_repositories(request.user, token)
 
         context = {"user_data": userdata, "user_repositories": user_repositories}
-        return render(request, self.template_name, context)
+
+        try:
+            return render(request, self.template_name, context)
+        except NoReverseMatch: # token expirado
+            return redirect("logout")
 
 
 
@@ -53,7 +60,11 @@ class DetailRepository(View):
     def get(self, request, *args, **kwargs):
         token = UserSocialAuth.objects.get(extra_data__contains=request.user.username).access_token
         context = {"repository_data": get_repository_info(request.user, kwargs["name"], token),"repository_tags": get_repository_tags(request.user, kwargs["name"], token)}
-        return render(request, self.template_name, context)
+        
+        try:
+            return render(request, self.template_name, context)
+        except NoReverseMatch:
+            return redirect("logout")
 
     def post(self, request, *args, **kwargs):
         token = UserSocialAuth.objects.get(extra_data__contains=request.user.username).access_token
@@ -63,7 +74,10 @@ class DetailRepository(View):
         response = update_repository_tags(request.user, kwargs["name"], token, lista_tags)
         repo = get_repository_info(request.user, kwargs["name"], token)
         context = {"repository_data": repo,"repository_tags": get_repository_tags(request.user, kwargs["name"], token)}        
-        return render(request, self.template_name, context)
+        try:
+            return render(request, self.template_name, context)
+        except NoReverseMatch:
+            return redirect("logout")
 
 
 def logout_view(request):

@@ -3,7 +3,7 @@ version: '3'
 services:
   web:
     build: .
-    command: gunicorn --bind 0.0.0.0:8000 teste_labhacker.wsgi
+    command: bash -c "python manage.py makemigrations && python manage.py migrate && gunicorn --bind 0.0.0.0:8000 teste_labhacker.wsgi"
     volumes:
       - .:/code
     ports:
