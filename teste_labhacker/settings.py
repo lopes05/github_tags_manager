@@ -39,7 +39,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'social_django',
     'authentication',
-    'repositories',
     'fontawesome_5'
 ]
 

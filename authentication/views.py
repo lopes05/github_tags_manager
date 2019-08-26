@@ -60,7 +60,6 @@ class DetailRepository(View):
 
     def post(self, request, *args, **kwargs):
         token = UserSocialAuth.objects.get(extra_data__contains=request.user.username).access_token
-        print(request.POST)
         lista_tags = request.POST.get("tag").split(',')
         lista_tags = [x.lower() for x in lista_tags if len(x) > 0]
 
